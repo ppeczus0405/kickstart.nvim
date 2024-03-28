@@ -41,7 +41,6 @@ return {
   },
   {
     'famiu/feline.nvim',
-    priority = 1001,
     dependencies = {
       'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
       'lewis6991/gitsigns.nvim',
@@ -50,6 +49,20 @@ return {
     config = function()
       vim.opt.termguicolors = true
       require('feline_theme').setup {}
+    end,
+  },
+  {
+    'tiagovla/scope.nvim',
+    config = function()
+      require('telescope').load_extension 'scope'
+      vim.keymap.set('n', '<leader><leader>', '<CMD>Telescope scope buffers<CR>', { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<C-Left>', '<CMD>tabprevious<CR>', { desc = 'Previous Tab' })
+      vim.keymap.set('n', '<C-Right>', '<CMD>tabnext<CR>', { desc = 'Next Tab' })
+      vim.keymap.set('n', '<C-Up>', '<CMD>bprev<CR>', { desc = 'Previous buffer' })
+      vim.keymap.set('n', '<C-Down>', '<CMD>bnext<CR>', { desc = 'Next buffer' })
+      vim.keymap.set('n', '<A-t>', '<CMD>tabnew<CR>', { desc = 'New Tab' })
+      vim.keymap.set('n', '<A-q>', '<CMD>tabclose<CR>', { desc = 'Close Tab' })
+      vim.keymap.set('n', '<A-d>', '<CMD>bdelete<CR>', { desc = 'Delete Buffer' })
     end,
   },
 }
