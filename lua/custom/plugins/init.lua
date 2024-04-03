@@ -30,7 +30,7 @@ return {
     },
     config = function()
       require('neo-tree').setup {}
-      vim.keymap.set('n', '<C-n>', '<cmd>Neotree<CR>', { desc = 'Nvimtree Toggle window' })
+      vim.keymap.set('n', '<C-n>', '<cmd>Neotree toggle<CR>', { desc = 'Nvimtree Toggle window' })
     end,
   },
   -- Base 46 themes
