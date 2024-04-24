@@ -128,4 +128,10 @@ return {
       end, { desc = 'Close Tab' })
     end,
   },
+  {
+    'sindrets/diffview.nvim',
+  },
+  {
+    'tpope/vim-fugitive',
+  },
 }

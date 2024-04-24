@@ -369,7 +369,19 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = {
+          git_commits = {
+            mappings = {
+              i = {
+                ['<C-o>'] = function(prompt_bufnr)
+                  require('telescope.actions').close(prompt_bufnr)
+                  local value = require('telescope.actions.state').get_selected_entry().value
+                  vim.cmd('DiffviewOpen ' .. value .. '~1..' .. value)
+                end,
+              },
+            },
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
