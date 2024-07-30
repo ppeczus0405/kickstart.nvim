@@ -149,4 +149,7 @@ return {
       'aklt/plantuml-syntax',
     },
   },
+  {
+    'instant-markdown/vim-instant-markdown',
+  },
 }
