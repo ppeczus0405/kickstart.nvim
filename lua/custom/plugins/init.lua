@@ -134,4 +134,7 @@ return {
   {
     'tpope/vim-fugitive',
   },
+  {
+    'instant-markdown/vim-instant-markdown',
+  },
 }
