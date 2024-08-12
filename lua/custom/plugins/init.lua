@@ -132,6 +132,14 @@ return {
     'sindrets/diffview.nvim',
   },
   {
-    'tpope/vim-fugitive',
+    'ppeczus0405/vim-fugitive',
+  },
+  {
+    'rbong/vim-flog',
+    lazy = true,
+    cmd = { 'Flog', 'Flogsplit', 'Floggit' },
+    dependencies = {
+      'ppeczus0405/vim-fugitive',
+    },
   },
 }

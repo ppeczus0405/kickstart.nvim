@@ -297,12 +297,17 @@ require('lazy').setup({
       require('which-key').setup()
 
       -- Document existing key chains
-      require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+      require('which-key').add {
+        { '<leader>c', group = '[C]ode' },
+        { '<leader>c_', hidden = true },
+        { '<leader>d', group = '[D]ocument' },
+        { '<leader>d_', hidden = true },
+        { '<leader>r', group = '[R]ename' },
+        { '<leader>r_', hidden = true },
+        { '<leader>s', group = '[S]earch' },
+        { '<leader>s_', hidden = true },
+        { '<leader>w', group = '[W]orkspace' },
+        { '<leader>w_', hidden = true },
       }
     end,
   },
@@ -445,6 +450,36 @@ require('lazy').setup({
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
       { 'folke/neodev.nvim', opts = {} },
+      {
+        'p00f/clangd_extensions.nvim',
+        lazy = true,
+        config = function() end,
+        opts = {
+          inlay_hints = {
+            inline = false,
+          },
+          ast = {
+            --These require codicons (https://github.com/microsoft/vscode-codicons)
+            role_icons = {
+              type = '',
+              declaration = '',
+              expression = '',
+              specifier = '',
+              statement = '',
+              ['template argument'] = '',
+            },
+            kind_icons = {
+              Compound = '',
+              Recovery = '',
+              TranslationUnit = '',
+              PackExpansion = '',
+              TemplateTypeParm = '',
+              TemplateTemplateParm = '',
+              TemplateParamObject = '',
+            },
+          },
+        },
+      },
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -529,6 +564,23 @@ require('lazy').setup({
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
+          -- Toggle hints
+          local hintGroup = vim.api.nvim_create_augroup('clangd_no_inlay_hints_in_insert', { clear = true })
+          map('<leader>ch', function()
+            if require('clangd_extensions.inlay_hints').toggle_inlay_hints() then
+              vim.api.nvim_create_autocmd(
+                'InsertEnter',
+                { group = hintGroup, buffer = event.buf, callback = require('clangd_extensions.inlay_hints').disable_inlay_hints }
+              )
+              vim.api.nvim_create_autocmd(
+                { 'TextChanged', 'InsertLeave' },
+                { group = hintGroup, buffer = event.buf, callback = require('clangd_extensions.inlay_hints').set_inlay_hints }
+              )
+            else
+              vim.api.nvim_clear_autocmds { group = hintGroup, buffer = event.buf }
+            end
+          end, 'lsp [c]pp [h]ints toggle')
+
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
           --    See `:help CursorHold` for information about when this is executed
@@ -567,7 +619,41 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         cmake = {},
-        clangd = {},
+        clangd = {
+          keys = {
+            { '<leader>ch', '<cmd>ClangdSwitchSourceHeader<cr>', desc = 'Switch Source/Header (C/C++)' },
+          },
+          root_dir = function(fname)
+            return require('lspconfig.util').root_pattern(
+              'Makefile',
+              'configure.ac',
+              'configure.in',
+              'config.h.in',
+              'meson.build',
+              'meson_options.txt',
+              'build.ninja'
+            )(fname) or require('lspconfig.util').root_pattern('compile_commands.json', 'compile_flags.txt')(fname) or require('lspconfig.util').find_git_ancestor(
+              fname
+            )
+          end,
+          capabilities = {
+            offsetEncoding = { 'utf-16' },
+          },
+          cmd = {
+            'clangd',
+            '--background-index',
+            '--clang-tidy',
+            '--header-insertion=iwyu',
+            '--completion-style=detailed',
+            '--function-arg-placeholders',
+            '--fallback-style=llvm',
+          },
+          init_options = {
+            usePlaceholders = true,
+            completeUnimported = true,
+            clangdFileStatus = true,
+          },
+        },
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
