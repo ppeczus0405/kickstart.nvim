@@ -142,4 +142,11 @@ return {
       'ppeczus0405/vim-fugitive',
     },
   },
+  {
+    'weirongxu/plantuml-previewer.vim',
+    dependencies = {
+      'tyru/open-browser.vim',
+      'aklt/plantuml-syntax',
+    },
+  },
 }
