@@ -132,7 +132,25 @@ return {
     'sindrets/diffview.nvim',
   },
   {
-    'tpope/vim-fugitive',
+    'ppeczus0405/vim-fugitive',
+  },
+  {
+    'rbong/vim-flog',
+    lazy = true,
+    cmd = { 'Flog', 'Flogsplit', 'Floggit' },
+    dependencies = {
+      'ppeczus0405/vim-fugitive',
+    },
+  },
+  {
+    'weirongxu/plantuml-previewer.vim',
+    dependencies = {
+      'tyru/open-browser.vim',
+      'aklt/plantuml-syntax',
+    },
+  },
+  {
+    'instant-markdown/vim-instant-markdown',
   },
   {
     'instant-markdown/vim-instant-markdown',
