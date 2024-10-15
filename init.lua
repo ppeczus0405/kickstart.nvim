@@ -642,6 +642,7 @@ require('lazy').setup({
           cmd = {
             'clangd',
             '--background-index',
+            '--background-index-priority=normal',
             '--clang-tidy',
             '--header-insertion=iwyu',
             '--completion-style=detailed',
