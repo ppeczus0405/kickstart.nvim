@@ -640,7 +640,7 @@ require('lazy').setup({
             offsetEncoding = { 'utf-16' },
           },
           cmd = {
-            'clangd',
+            '/home/p.peczak/.local/bin/clangd',
             '--background-index',
             '--background-index-priority=normal',
             '--clang-tidy',
@@ -648,6 +648,8 @@ require('lazy').setup({
             '--completion-style=detailed',
             '--function-arg-placeholders',
             '--fallback-style=llvm',
+            '--enable-config',
+            '--log=verbose',
           },
           init_options = {
             usePlaceholders = true,
