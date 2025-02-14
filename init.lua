@@ -543,6 +543,11 @@ require('lazy').setup({
       --    That is to say, every time a new file is opened that is associated with
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
       --    function will be executed to configure the current buffer
+
+      -- Set LSP level to trace.
+      -- LSP log location: $HOME/.local/state/nvim/lsp.log
+      vim.lsp.set_log_level 'trace'
+
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
@@ -680,7 +685,7 @@ require('lazy').setup({
             '--completion-style=detailed',
             '--function-arg-placeholders',
             '--fallback-style=llvm',
-            '--log=error',
+            '--log=verbose',
           },
           init_options = {
             usePlaceholders = true,
