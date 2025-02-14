@@ -680,6 +680,7 @@ require('lazy').setup({
             '--completion-style=detailed',
             '--function-arg-placeholders',
             '--fallback-style=llvm',
+            '--log=error',
           },
           init_options = {
             usePlaceholders = true,
